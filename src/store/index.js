@@ -38,6 +38,7 @@ export default new Vuex.Store({
     },
     logout: ({ commit }) => {
       commit("logout");
+      router.push("/login");
     },
   },
   modules: {
