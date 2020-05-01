@@ -1,28 +1,43 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import hospital from "./modules/hospital";
 import router from "../router";
+import axios from "axios";
+import createPersistedState from "vuex-persistedstate";
+import hospital from "./modules/hospital";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
-    isLogged: false,
+    token: null,
   },
   getters: {
-    isLogged: (state) => {
-      return state.isLogged;
+    token: (state) => {
+      return state.token;
     },
   },
   mutations: {
-    login: (state) => {
-      state.isLogged = true;
+    login: (state, token) => {
+      state.token = token;
+    },
+    logout: (state) => {
+      state.token = null;
     },
   },
   actions: {
     login: ({ commit }) => {
-      commit("login");
-      router.push("/dashboard");
+      axios
+        .get("user/")
+        .then((res) => {
+          console.log("data", res.data);
+          commit("login", "TOKEN");
+          router.push("/dashboard");
+        })
+        .catch((error) => console.log(error));
+    },
+    logout: ({ commit }) => {
+      commit("logout");
     },
   },
   modules: {

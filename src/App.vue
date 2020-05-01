@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- Navigation Drawer -->
-    <v-navigation-drawer v-if="isLogged" v-model="drawer" app clipped>
+    <v-navigation-drawer v-if="token" v-model="drawer" app clipped>
       <v-list dense nav>
         <v-list-item-group v-model="item" color="primary">
           <div v-for="item in items" :key="item.title">
@@ -38,7 +38,7 @@
     </v-navigation-drawer>
 
     <!-- Application Bar -->
-    <v-app-bar v-if="isLogged" app color="primary" dark clipped-left>
+    <v-app-bar v-if="token" app color="primary" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Hospital Apps</v-toolbar-title>
     </v-app-bar>
@@ -78,7 +78,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(["isLogged"]),
+    ...mapGetters(["token"]),
   },
 };
 </script>
