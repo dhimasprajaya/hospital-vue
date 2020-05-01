@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- Navigation Drawer -->
-    <v-navigation-drawer v-model="drawer" app clipped>
+    <v-navigation-drawer v-if="isLogged" v-model="drawer" app clipped>
       <v-list dense nav>
         <v-list-item-group v-model="item" color="primary">
           <div v-for="item in items" :key="item.title">
@@ -38,14 +38,14 @@
     </v-navigation-drawer>
 
     <!-- Application Bar -->
-    <v-app-bar app color="primary" dark clipped-left>
+    <v-app-bar v-if="isLogged" app color="primary" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Hospital Apps</v-toolbar-title>
     </v-app-bar>
 
     <!-- Content -->
     <v-content>
-      <v-container class="fill-height" fluid>
+      <v-container class="fill-height py-0" fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
@@ -56,6 +56,7 @@
 export default {
   name: "App",
   data: () => ({
+    isLogged: false,
     drawer: null,
     item: null,
     items: [
@@ -87,9 +88,5 @@ export default {
 
 .b-blue {
   border: 1px solid blue;
-}
-
-.center {
-  margin: auto;
 }
 </style>
