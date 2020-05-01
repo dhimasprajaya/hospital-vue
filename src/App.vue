@@ -53,10 +53,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "App",
+
   data: () => ({
-    isLogged: false,
     drawer: null,
     item: null,
     items: [
@@ -74,6 +76,10 @@ export default {
       { title: "Logout", icon: "mdi-exit-to-app" },
     ],
   }),
+
+  computed: {
+    ...mapGetters(["isLogged"]),
+  },
 };
 </script>
 

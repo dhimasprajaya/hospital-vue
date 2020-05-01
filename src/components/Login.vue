@@ -39,16 +39,17 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data: () => ({
     email: "",
     password: "",
     show: false,
   }),
+
   methods: {
-    login() {
-      this.$router.push("/dashboard");
-    },
+    ...mapActions(["login"]),
     forgot() {
       this.$router.push("/forgot");
     },
