@@ -23,6 +23,10 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
+  {
+    path: "*",
+    redirect: "/",
+  },
 ];
 
 const router = new VueRouter({

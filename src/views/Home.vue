@@ -16,7 +16,9 @@
       </div>
     </v-col>
     <v-col class="bg1" cols="12" sm="6">
-      <router-view></router-view>
+      <v-fade-transition>
+        <router-view></router-view>
+      </v-fade-transition>
     </v-col>
   </v-row>
 </template>
