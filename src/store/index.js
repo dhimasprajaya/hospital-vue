@@ -27,14 +27,16 @@ export default new Vuex.Store({
   },
   actions: {
     login: ({ commit }) => {
-      axios
-        .get("user/")
-        .then((res) => {
-          console.log("data", res.data);
-          commit("login", "TOKEN");
-          router.push("/dashboard");
-        })
-        .catch((error) => console.log(error));
+      commit("login", "TOKEN");
+      router.push("/dashboard");
+      // axios
+      //   .get("user/")
+      //   .then((res) => {
+      //     console.log("data", res.data);
+      //     commit("login", "TOKEN");
+      //     router.push("/dashboard");
+      //   })
+      //   .catch((error) => console.log(error));
     },
     logout: ({ commit }) => {
       commit("logout");

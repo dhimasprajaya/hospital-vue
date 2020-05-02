@@ -45,7 +45,7 @@
 
     <!-- Content -->
     <v-content>
-      <v-container class="fill-height py-0" fluid>
+      <v-container class="pa-0" fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
@@ -94,5 +94,9 @@ export default {
 
 .b-blue {
   border: 1px solid blue;
+}
+
+.backdrop {
+  background-color: var(--v-grey-lighten4);
 }
 </style>

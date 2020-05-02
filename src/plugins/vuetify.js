@@ -18,7 +18,7 @@ export default new Vuetify({
         info: "#2196F3",
         success: "#4CAF50",
         warning: "#FFC107",
-        bg1: colors.grey.lighten5,
+        grey: colors.grey,
       },
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="fill-height">
+  <v-row no-gutters style="height:100vh">
     <v-col
       class="d-none d-sm-flex align-center justify-center primary"
       cols="12"
@@ -10,12 +10,12 @@
           class="mdi mdi-hospital-building mb-4"
           color="white"
           alt="logo"
-          style="font-size: 100px"
+          style="font-size:100px"
         ></v-icon>
         <h1 class="white--text">Hospital Apps</h1>
       </div>
     </v-col>
-    <v-col class="bg1" cols="12" sm="6">
+    <v-col cols="12" sm="6">
       <v-fade-transition>
         <router-view></router-view>
       </v-fade-transition>
