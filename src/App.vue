@@ -53,7 +53,7 @@
           class="hidden-sm-and-down"
         />
       </div>
-      <v-btn class="ml-1" icon>
+      <v-btn class="ml-1" icon @click="logout">
         <v-icon>mdi-apps</v-icon>
       </v-btn>
     </v-app-bar>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -91,6 +91,10 @@ export default {
       { title: "Logout", icon: "mdi-exit-to-app" },
     ],
   }),
+
+  methods: {
+    ...mapActions(["logout"]),
+  },
 
   computed: {
     ...mapGetters(["token"]),
