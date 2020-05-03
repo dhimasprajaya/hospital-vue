@@ -41,11 +41,26 @@
     <v-app-bar v-if="token" app color="primary" dark clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Hospital Apps</v-toolbar-title>
+      <v-spacer />
+      <div style="width:320px">
+        <v-text-field
+          flat
+          dense
+          solo-inverted
+          hide-details
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+          class="hidden-sm-and-down"
+        />
+      </div>
+      <v-btn class="ml-1" icon>
+        <v-icon>mdi-apps</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <!-- Content -->
     <v-content>
-      <v-container class="pa-0" fluid>
+      <v-container class="fill-height pa-0" fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
@@ -97,6 +112,7 @@ export default {
 }
 
 .backdrop {
+  height: 100%;
   background-color: var(--v-grey-lighten4);
 }
 </style>

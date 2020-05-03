@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters style="height:100vh">
+  <v-row class="fill-height">
     <v-col
       class="d-none d-sm-flex align-center justify-center primary"
       cols="12"
