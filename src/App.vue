@@ -13,7 +13,11 @@
                 </v-list-item-content>
               </template>
 
-              <v-list-item v-for="subItem in item.items" :key="subItem.title">
+              <v-list-item
+                v-for="subItem in item.items"
+                :key="subItem.title"
+                :to="subItem.link"
+              >
                 <v-list-item-icon>
                   <v-icon v-text="subItem.icon"></v-icon>
                 </v-list-item-icon>
@@ -24,7 +28,7 @@
             </v-list-group>
 
             <!-- If Menu don't contains Sub Menu -->
-            <v-list-item v-else>
+            <v-list-item v-else :to="item.link">
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon>
@@ -35,6 +39,15 @@
           </div>
         </v-list-item-group>
       </v-list>
+
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn outlined block color="accent" @click="logout">
+            <v-icon class="mr-2">mdi-exit-to-app</v-icon>
+            Logout
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <!-- Application Bar -->
@@ -53,7 +66,7 @@
           class="hidden-sm-and-down"
         />
       </div>
-      <v-btn class="ml-1" icon @click="logout">
+      <v-btn class="ml-1" icon>
         <v-icon>mdi-apps</v-icon>
       </v-btn>
     </v-app-bar>
@@ -68,7 +81,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -77,23 +90,28 @@ export default {
     drawer: null,
     item: null,
     items: [
-      { title: "Dashboard", icon: "mdi-view-dashboard", link: "" },
+      { title: "Dashboard", icon: "mdi-view-dashboard", link: "/dashboard" },
       {
         title: "Master",
         icon: "mdi-database",
         items: [
-          { title: "Hospital", icon: "mdi-hospital-building", link: "" },
-          { title: "Doctor", icon: "mdi-account", link: "" },
-          { title: "Patient", icon: "mdi-account-box", link: "" },
+          {
+            title: "Hospital",
+            icon: "mdi-hospital-building",
+            link: "/hospital",
+          },
+          { title: "Doctor", icon: "mdi-account", link: "/doctor" },
+          { title: "Patient", icon: "mdi-account-box", link: "/patient" },
         ],
       },
-      { title: "Setting", icon: "mdi-wrench" },
-      { title: "Logout", icon: "mdi-exit-to-app" },
+      { title: "Setting", icon: "mdi-wrench", link: "/setting" },
     ],
   }),
 
   methods: {
-    ...mapActions(["logout"]),
+    logout() {
+      this.$store.dispatch("logout");
+    },
   },
 
   computed: {

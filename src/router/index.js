@@ -4,6 +4,10 @@ import Home from "../views/Home.vue";
 import Login from "../components/Login.vue";
 import Forgot from "../components/Forgot.vue";
 import Dashboard from "../views/Dashboard.vue";
+import Hospital from "../views/Hospital.vue";
+import Doctor from "../views/Doctor.vue";
+import Patient from "../views/Patient.vue";
+import Setting from "../views/Setting.vue";
 
 import store from "../store";
 
@@ -31,6 +35,26 @@ const routes = [
         next("/login");
       }
     },
+  },
+  {
+    path: "/hospital",
+    name: "Hospital",
+    component: Hospital,
+  },
+  {
+    path: "/doctor",
+    name: "Doctor",
+    component: Doctor,
+  },
+  {
+    path: "/patient",
+    name: "Patient",
+    component: Patient,
+  },
+  {
+    path: "/setting",
+    name: "Setting",
+    component: Setting,
   },
   {
     path: "*",
