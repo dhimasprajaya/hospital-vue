@@ -81,6 +81,7 @@
     <!-- Utils -->
     <Loading></Loading>
     <Snackbar></Snackbar>
+    <Dialog></Dialog>
   </v-app>
 </template>
 
@@ -88,6 +89,7 @@
 import { mapGetters, mapActions } from "vuex";
 import Loading from "./components/Loading";
 import Snackbar from "./components/Snackbar";
+import Dialog from "./components/Dialog";
 
 export default {
   name: "App",
@@ -95,6 +97,7 @@ export default {
   components: {
     Loading,
     Snackbar,
+    Dialog,
   },
 
   data: () => ({

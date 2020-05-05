@@ -167,6 +167,7 @@ export default {
       "createHospital",
       "editHospital",
       "deleteHospital",
+      "showDialog",
     ]),
     addItem() {
       this.isEdit = false;
@@ -179,7 +180,14 @@ export default {
     },
 
     deleteItem(item) {
-      this.deleteHospital(item);
+      this.showDialog({
+        title: "Delete Item",
+        text: "Confirm delete this item?",
+      }).then((confirm) => {
+        if (confirm) {
+          this.deleteHospital(item);
+        }
+      });
     },
 
     save() {

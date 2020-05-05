@@ -4,11 +4,12 @@ import router from "../router";
 import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 import hospital from "./modules/hospital";
+import dialog from "./modules/dialog";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState()],
   state: {
     token: null,
     loading: false,
@@ -52,9 +53,16 @@ export default new Vuex.Store({
       //   })
       //   .catch((error) => console.log(error));
     },
-    logout: ({ commit }) => {
-      commit("logout");
-      router.push("/login");
+    logout: ({ commit, dispatch }) => {
+      dispatch("showDialog", {
+        title: "Confirm Logout",
+        text: "Are you sure want to logout?",
+      }).then((confirm) => {
+        if (confirm) {
+          commit("logout");
+          router.push("/login");
+        }
+      });
     },
     loading: ({ commit }, payload) => {
       commit("loading", payload);
@@ -72,5 +80,6 @@ export default new Vuex.Store({
   },
   modules: {
     hospital,
+    dialog,
   },
 });
