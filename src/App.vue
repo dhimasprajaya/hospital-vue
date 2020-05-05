@@ -77,14 +77,25 @@
         <router-view></router-view>
       </v-container>
     </v-content>
+
+    <!-- Utils -->
+    <Loading></Loading>
+    <Snackbar></Snackbar>
   </v-app>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import Loading from "./components/Loading";
+import Snackbar from "./components/Snackbar";
 
 export default {
   name: "App",
+
+  components: {
+    Loading,
+    Snackbar,
+  },
 
   data: () => ({
     drawer: null,
@@ -109,9 +120,7 @@ export default {
   }),
 
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    },
+    ...mapActions(["logout"]),
   },
 
   computed: {

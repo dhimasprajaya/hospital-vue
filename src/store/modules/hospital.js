@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 
 const state = {
   hospitals: [],
@@ -22,40 +22,24 @@ const mutations = {
 
 const actions = {
   getHospitals: ({ commit }) => {
-    axios
-      .get("hospital/")
-      .then((res) => {
-        console.log(res);
-        commit("saveHospitals", res.data);
-      })
-      .catch((error) => alert(JSON.stringify(error)));
+    axios.get("hospital/").then((res) => {
+      if (res.data) commit("saveHospitals", res.data);
+    });
   },
   createHospital: ({ dispatch }, params) => {
-    axios
-      .post("hospital/", params)
-      .then((res) => {
-        console.log(res);
-        dispatch("getHospitals");
-      })
-      .catch((error) => alert(JSON.stringify(error)));
+    axios.post("hospital/", params).then((res) => {
+      if (res) dispatch("getHospitals");
+    });
   },
   editHospital: ({ dispatch }, params) => {
-    axios
-      .put("hospital/", params)
-      .then((res) => {
-        console.log(res);
-        dispatch("getHospitals");
-      })
-      .catch((error) => alert(JSON.stringify(error)));
+    axios.put("hospital/", params).then((res) => {
+      if (res) dispatch("getHospitals");
+    });
   },
   deleteHospital: ({ dispatch }, params) => {
-    axios
-      .delete("hospital/" + params.id)
-      .then((res) => {
-        console.log(res);
-        dispatch("getHospitals");
-      })
-      .catch((error) => alert(JSON.stringify(error)));
+    axios.delete("hospital/" + params.id).then((res) => {
+      if (res) dispatch("getHospitals");
+    });
   },
 };
 

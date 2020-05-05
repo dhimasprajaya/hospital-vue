@@ -11,10 +11,18 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     token: null,
+    loading: false,
+    snackbar: {},
   },
   getters: {
     token: (state) => {
       return state.token;
+    },
+    loading: (state) => {
+      return state.loading;
+    },
+    snackbar: (state) => {
+      return state.snackbar;
     },
   },
   mutations: {
@@ -23,6 +31,12 @@ export default new Vuex.Store({
     },
     logout: (state) => {
       state.token = null;
+    },
+    loading: (state, payload) => {
+      state.loading = payload;
+    },
+    snackbar: (state, snackbar) => {
+      state.snackbar = snackbar;
     },
   },
   actions: {
@@ -41,6 +55,19 @@ export default new Vuex.Store({
     logout: ({ commit }) => {
       commit("logout");
       router.push("/login");
+    },
+    loading: ({ commit }, payload) => {
+      commit("loading", payload);
+    },
+    snackbar: ({ commit }, snackbar) => {
+      if (!snackbar.show) snackbar.show = true;
+      if (!snackbar.color) snackbar.color = "accent";
+      if (!snackbar.timeout) snackbar.timeout = 2000;
+      commit("snackbar", snackbar);
+
+      setTimeout(() => {
+        commit("snackbar", {});
+      }, snackbar.timeout);
     },
   },
   modules: {
