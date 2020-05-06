@@ -23,6 +23,8 @@
                       <v-text-field
                         label="Hospital ID"
                         v-model="hospital.hospital_id"
+                        @blur="$v.hospital.hospital_id.$touch()"
+                        :error-messages="hospitalIdErrors"
                         outlined
                         single-line
                         dense
@@ -33,6 +35,8 @@
                       <v-select
                         label="Type"
                         v-model="hospital.type"
+                        @blur="$v.hospital.type.$touch()"
+                        :error-messages="typeErrors"
                         :items="hospitalTypes"
                         outlined
                         single-line
@@ -44,6 +48,8 @@
                       <v-text-field
                         label="Name"
                         v-model="hospital.name"
+                        @blur="$v.hospital.name.$touch()"
+                        :error-messages="nameErrors"
                         outlined
                         single-line
                         dense
@@ -54,6 +60,8 @@
                       <v-text-field
                         label="Province"
                         v-model="hospital.province"
+                        @blur="$v.hospital.province.$touch()"
+                        :error-messages="provinceErrors"
                         outlined
                         single-line
                         dense
@@ -64,6 +72,8 @@
                       <v-text-field
                         label="City"
                         v-model="hospital.city"
+                        @blur="$v.hospital.city.$touch()"
+                        :error-messages="cityErrors"
                         outlined
                         single-line
                         dense
@@ -74,6 +84,8 @@
                       <v-textarea
                         label="Address"
                         v-model="hospital.address"
+                        @blur="$v.hospital.address.$touch()"
+                        :error-messages="addressErrors"
                         auto-grow
                         outlined
                         single-line
@@ -85,6 +97,8 @@
                       <v-text-field
                         label="Latitude"
                         v-model.number="hospital.latitude"
+                        @blur="$v.hospital.latitude.$touch()"
+                        :error-messages="latitudeErrors"
                         outlined
                         single-line
                         dense
@@ -96,6 +110,8 @@
                       <v-text-field
                         label="Longitude"
                         v-model.number="hospital.longitude"
+                        @blur="$v.hospital.longitude.$touch()"
+                        :error-messages="longitudeErrors"
                         outlined
                         single-line
                         dense
@@ -111,7 +127,13 @@
                 <v-btn color="accent darken-3" text @click="dialog = false"
                   >Cancel</v-btn
                 >
-                <v-btn color="accent darken-3" text @click="save">Save</v-btn>
+                <v-btn
+                  color="accent darken-3"
+                  text
+                  @click="save"
+                  :disabled="$v.$invalid"
+                  >Save</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -131,6 +153,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "Hospital",
@@ -150,10 +173,85 @@ export default {
     isEdit: false,
   }),
 
+  validations: {
+    hospital: {
+      hospital_id: { required },
+      type: { required },
+      name: { required },
+      province: { required },
+      city: { required },
+      address: { required },
+      latitude: { required },
+      longitude: { required },
+    },
+    validationGroup: [
+      "hospital.hospital_id",
+      "hospital.type",
+      "hospital.name",
+      "hospital.province",
+      "hospital.city",
+      "hospital.address",
+      "hospital.latitude",
+      "hospital.longitude",
+    ],
+  },
+
   computed: {
     ...mapGetters(["hospitalTypes", "hospitals"]),
     formTitle() {
       return this.isEdit === false ? "New Hospital" : "Edit Hospital";
+    },
+    hospitalIdErrors() {
+      const errors = [];
+      if (!this.$v.hospital.hospital_id.$dirty) return errors;
+      !this.$v.hospital.hospital_id.required &&
+        errors.push("Hospital ID is required");
+      return errors;
+    },
+    typeErrors() {
+      const errors = [];
+      if (!this.$v.hospital.type.$dirty) return errors;
+      !this.$v.hospital.type.required && errors.push("Type is required");
+      return errors;
+    },
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.hospital.name.$dirty) return errors;
+      !this.$v.hospital.name.required && errors.push("Name is required");
+      return errors;
+    },
+    provinceErrors() {
+      const errors = [];
+      if (!this.$v.hospital.province.$dirty) return errors;
+      !this.$v.hospital.province.required &&
+        errors.push("Province is required");
+      return errors;
+    },
+    cityErrors() {
+      const errors = [];
+      if (!this.$v.hospital.city.$dirty) return errors;
+      !this.$v.hospital.city.required && errors.push("City is required");
+      return errors;
+    },
+    addressErrors() {
+      const errors = [];
+      if (!this.$v.hospital.address.$dirty) return errors;
+      !this.$v.hospital.address.required && errors.push("Address is required");
+      return errors;
+    },
+    latitudeErrors() {
+      const errors = [];
+      if (!this.$v.hospital.latitude.$dirty) return errors;
+      !this.$v.hospital.latitude.required &&
+        errors.push("Latitude is required");
+      return errors;
+    },
+    longitudeErrors() {
+      const errors = [];
+      if (!this.$v.hospital.longitude.$dirty) return errors;
+      !this.$v.hospital.longitude.required &&
+        errors.push("Longitude is required");
+      return errors;
     },
   },
 
@@ -171,11 +269,11 @@ export default {
     ]),
     addItem() {
       this.isEdit = false;
-      this.hospital = {};
+      this.hospital = Object.assign({}, {});
     },
     editItem(item) {
       this.isEdit = true;
-      this.hospital = item;
+      this.hospital = Object.assign({}, item);
       this.dialog = true;
     },
 
