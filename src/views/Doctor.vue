@@ -1,11 +1,230 @@
 <template>
   <v-container class="backdrop" fluid>
-    <h2>Doctor</h2>
+    <!-- Toolbar -->
+    <v-toolbar flat>
+      <v-toolbar-title>Doctor</v-toolbar-title>
+      <v-divider class="mx-4" inset vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-btn color="accent" dark @click="addItem">Add New</v-btn>
+    </v-toolbar>
+
+    <!-- Card -->
+    <v-row dense class="mt-1">
+      <v-col v-for="doctor in doctors" :key="doctor.id" cols="12" sm="6" md="4">
+        <v-card @click="editItem(doctor)">
+          <v-row no-gutters>
+            <v-col cols="4">
+              <v-img class="ma-1" height="100" contain :src="doctor.image_url">
+                <template v-slot:placeholder>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-icon
+                      class="mdi mdi-account-box grey--text"
+                      style="font-size:70px"
+                    ></v-icon>
+                  </v-row>
+                </template>
+              </v-img>
+              <p
+                class="ma-1 text-center primary white--text"
+                style="font-size:12px"
+              >
+                {{ doctor.doctor_id }}
+              </p>
+            </v-col>
+            <v-col class="pl-2" cols="8">
+              <h4 class="pa-0 ma-0">
+                {{ doctor.first_name + " " + doctor.last_name }}
+              </h4>
+              <p class="primary--text ma-0" style="font-size:14px">
+                <strong>
+                  {{ doctor.specialist }}
+                </strong>
+              </p>
+              <hr class="mr-2" />
+              <p class="ma-0" style="font-size:14px">
+                <i class="mdi mdi-phone mr-2 primary--text"></i>
+                {{ doctor.phone }}
+              </p>
+              <br />
+              <p class="ma-0" style="font-size:12px">
+                License Number :
+              </p>
+              <p class="ma-0" style="font-size:14px">
+                {{ doctor.license_number }}
+              </p>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Right Navigation Drawer -->
+    <v-navigation-drawer v-model="drawerRight" clipped right app width="380">
+      <v-container>
+        <v-toolbar flat>
+          <v-toolbar-title class="ml-n4">{{ formTitle }}</v-toolbar-title>
+        </v-toolbar>
+        <v-row dense>
+          <v-col cols="6">
+            <v-text-field
+              label="Firstname"
+              v-model="doctor.first_name"
+              outlined
+              single-line
+              dense
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              label="Lastname"
+              v-model="doctor.last_name"
+              outlined
+              single-line
+              dense
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              label="Phone Number"
+              v-model="doctor.phone"
+              outlined
+              single-line
+              dense
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              label="Doctor ID"
+              v-model="doctor.doctor_id"
+              outlined
+              single-line
+              dense
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              label="License Number"
+              v-model="doctor.license_number"
+              outlined
+              single-line
+              dense
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              label="Specialization"
+              v-model="doctor.specialist"
+              outlined
+              single-line
+              dense
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
+      <template v-slot:append>
+        <div class="d-flex pa-2">
+          <v-btn v-if="isEdit" color="error" @click="deleteItem()">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn class="mr-2" outlined color="accent" @click="cancel">
+            Cancel
+          </v-btn>
+          <v-btn primary color="accent" @click="save" width="100">
+            Save
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
   </v-container>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { required } from "vuelidate/lib/validators";
+
 export default {
   name: "Doctor",
+
+  data: () => ({
+    drawerRight: false,
+    isEdit: false,
+    doctor: {},
+  }),
+
+  validations: {
+    doctor: {
+      first_name: { required },
+      last_name: { required },
+      phone: { required },
+      doctor_id: { required },
+      license_number: { required },
+      specialist: { required },
+    },
+  },
+
+  computed: {
+    ...mapGetters(["doctors"]),
+    formTitle() {
+      return this.isEdit === false ? "New Doctor" : "Edit Doctor";
+    },
+  },
+
+  created() {
+    this.getDoctors();
+  },
+
+  methods: {
+    ...mapActions([
+      "getDoctors",
+      "createDoctor",
+      "editDoctor",
+      "deleteDoctor",
+      "showDialog",
+    ]),
+    addItem() {
+      this.drawerRight = true;
+      this.doctor = {};
+    },
+    editItem(doctor) {
+      this.drawerRight = true;
+      this.isEdit = true;
+      this.doctor = Object.assign({}, doctor);
+    },
+    cancel() {
+      this.drawerRight = false;
+      this.isEdit = false;
+      this.doctor = {};
+    },
+    deleteItem() {
+      this.showDialog({
+        title: "Delete Doctor",
+        text: "Confirm delete this data?",
+      }).then((confirm) => {
+        if (confirm) {
+          this.deleteDoctor(this.doctor);
+          this.drawerRight = false;
+          this.isEdit = false;
+        }
+      });
+    },
+    save() {
+      this.isEdit
+        ? this.editDoctor(this.doctor)
+        : this.createDoctor(this.doctor);
+
+      this.doctor = {};
+      this.drawerRight = false;
+      this.isEdit = false;
+    },
+  },
 };
 </script>

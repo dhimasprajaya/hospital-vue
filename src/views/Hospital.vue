@@ -184,16 +184,16 @@ export default {
       latitude: { required },
       longitude: { required },
     },
-    validationGroup: [
-      "hospital.hospital_id",
-      "hospital.type",
-      "hospital.name",
-      "hospital.province",
-      "hospital.city",
-      "hospital.address",
-      "hospital.latitude",
-      "hospital.longitude",
-    ],
+    // validationGroup: [
+    //   "hospital.hospital_id",
+    //   "hospital.type",
+    //   "hospital.name",
+    //   "hospital.province",
+    //   "hospital.city",
+    //   "hospital.address",
+    //   "hospital.latitude",
+    //   "hospital.longitude",
+    // ],
   },
 
   computed: {

@@ -4,6 +4,7 @@ import router from "../router";
 import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 import hospital from "./modules/hospital";
+import doctor from "./modules/doctor";
 
 Vue.use(Vuex);
 
@@ -97,5 +98,6 @@ export default new Vuex.Store({
   },
   modules: {
     hospital,
+    doctor,
   },
 });
