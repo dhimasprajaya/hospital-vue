@@ -18,23 +18,16 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    redirect: "/dashboard",
+    redirect: "/login",
     children: [
-      { path: "login", component: Login },
-      { path: "forgot", component: Forgot },
+      { name: "Login", path: "login", component: Login },
+      { name: "Forgot", path: "forgot", component: Forgot },
     ],
   },
   {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    beforeEnter(to, from, next) {
-      if (store.getters.token) {
-        next();
-      } else {
-        next("/login");
-      }
-    },
   },
   {
     path: "/hospital",
@@ -66,6 +59,16 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "Forgot" && !store.getters.token) next();
+  else if (to.name !== "Login" && !store.getters.token) next({ name: "Login" });
+  else if (to.name === "Login" && store.getters.token)
+    next({ name: "Dashboard" });
+  else if (to.name === "Forgot" && store.getters.token)
+    next({ name: "Dashboard" });
+  else next();
 });
 
 export default router;
