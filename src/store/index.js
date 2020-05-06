@@ -4,16 +4,16 @@ import router from "../router";
 import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 import hospital from "./modules/hospital";
-import dialog from "./modules/dialog";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // plugins: [createPersistedState()],
+  plugins: [createPersistedState({ key: "local", paths: ["token"] })],
   state: {
     token: null,
     loading: false,
     snackbar: {},
+    dialog: {},
   },
   getters: {
     token: (state) => {
@@ -24,6 +24,9 @@ export default new Vuex.Store({
     },
     snackbar: (state) => {
       return state.snackbar;
+    },
+    dialog: (state) => {
+      return state.dialog;
     },
   },
   mutations: {
@@ -38,6 +41,12 @@ export default new Vuex.Store({
     },
     snackbar: (state, snackbar) => {
       state.snackbar = snackbar;
+    },
+    showDialog: (state, dialog) => {
+      state.dialog = dialog;
+    },
+    dismissDialog: (state) => {
+      state.dialog = {};
     },
   },
   actions: {
@@ -77,9 +86,16 @@ export default new Vuex.Store({
         commit("snackbar", {});
       }, snackbar.timeout);
     },
+    showDialog: ({ commit }, { title, text }) => {
+      return new Promise((resolve, reject) => {
+        commit("showDialog", { show: true, title, text, resolve, reject });
+      });
+    },
+    dismissDialog: ({ commit }) => {
+      commit("dismissDialog");
+    },
   },
   modules: {
-    hospital,
-    dialog,
+    hospital
   },
 });
