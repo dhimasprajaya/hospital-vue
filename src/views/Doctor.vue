@@ -9,7 +9,7 @@
     </v-toolbar>
 
     <!-- Card -->
-    <v-row dense class="mt-1">
+    <v-row dense class="mt-1" style="height:77vh">
       <v-col v-for="doctor in doctors" :key="doctor.id" cols="12" sm="6" md="4">
         <v-card @click="editItem(doctor)">
           <v-row no-gutters>
@@ -59,6 +59,14 @@
             </v-col>
           </v-row>
         </v-card>
+      </v-col>
+      <v-col
+        v-if="emptyData"
+        cols="12"
+        class="d-flex flex-column align-center justify-center"
+      >
+        <v-icon class="mdi mdi-file-find" style="font-size:90px"></v-icon>
+        <p>No data available</p>
       </v-col>
     </v-row>
 
@@ -205,6 +213,9 @@ export default {
 
   computed: {
     ...mapGetters(["doctors"]),
+    emptyData() {
+      return this.doctors.length > 0 ? false : true;
+    },
     formTitle() {
       return this.isEdit === false ? "New Doctor" : "Edit Doctor";
     },
