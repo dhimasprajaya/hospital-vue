@@ -3,9 +3,10 @@ import Vuex from "vuex";
 import router from "../router";
 import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
+import firebase from "./modules/firebase";
 import hospital from "./modules/hospital";
 import doctor from "./modules/doctor";
-import firebase from "./modules/firebase";
+import patient from "./modules/patient";
 
 Vue.use(Vuex);
 
@@ -98,8 +99,9 @@ export default new Vuex.Store({
     },
   },
   modules: {
+    firebase,
     hospital,
     doctor,
-    firebase,
+    patient,
   },
 });
