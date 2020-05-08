@@ -53,7 +53,7 @@
     <!-- Application Bar -->
     <v-app-bar v-if="token" app color="primary" dark clipped-left clipped-right>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Hospital Apps</v-toolbar-title>
+      <v-toolbar-title style="min-width:150px">Hospital Apps</v-toolbar-title>
       <v-spacer />
       <div style="width:320px">
         <v-text-field

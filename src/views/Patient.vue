@@ -1,8 +1,8 @@
 <template>
-  <v-container class="backdrop b-red" fluid>
+  <v-container class="backdrop" fluid>
     <!-- Toolbar -->
     <v-toolbar flat>
-      <v-toolbar-title>Patient</v-toolbar-title>
+      <v-toolbar-title style="min-width:64px">Patient</v-toolbar-title>
       <v-divider class="mx-4" inset vertical></v-divider>
       <v-spacer></v-spacer>
       <v-text-field
@@ -15,7 +15,14 @@
         hide-details
       ></v-text-field>
     </v-toolbar>
-    <v-data-table :headers="headers" :items="dataset" :search="search">
+
+    <!-- Data Table-->
+    <v-data-table
+      class="mt-2"
+      :headers="headers"
+      :items="dataset"
+      :search="search"
+    >
       <template v-slot:item.actions="{ item }">
         <v-btn outlined color="primary" height="30" @click="viewDetail(item)"
           >View Detail</v-btn

@@ -1,144 +1,147 @@
 <template>
   <v-container class="backdrop" fluid>
-    <v-data-table :headers="headers" :items="hospitals" sort-by="hospital_id">
-      <template v-slot:top>
-        <v-toolbar flat color="white">
-          <v-toolbar-title>Hospital</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{ on }">
-              <v-btn color="accent" dark v-on="on" @click="addItem()"
-                >New Item</v-btn
-              >
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container class="pa-0">
-                  <v-row dense>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        label="Hospital ID"
-                        v-model="hospital.hospital_id"
-                        @blur="$v.hospital.hospital_id.$touch()"
-                        :error-messages="hospitalIdErrors"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-select
-                        label="Type"
-                        v-model="hospital.type"
-                        @blur="$v.hospital.type.$touch()"
-                        :error-messages="typeErrors"
-                        :items="hospitalTypes"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                      ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="12">
-                      <v-text-field
-                        label="Name"
-                        v-model="hospital.name"
-                        @blur="$v.hospital.name.$touch()"
-                        :error-messages="nameErrors"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        label="Province"
-                        v-model="hospital.province"
-                        @blur="$v.hospital.province.$touch()"
-                        :error-messages="provinceErrors"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        label="City"
-                        v-model="hospital.city"
-                        @blur="$v.hospital.city.$touch()"
-                        :error-messages="cityErrors"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="12">
-                      <v-textarea
-                        label="Address"
-                        v-model="hospital.address"
-                        @blur="$v.hospital.address.$touch()"
-                        :error-messages="addressErrors"
-                        auto-grow
-                        outlined
-                        single-line
-                        rows="3"
-                        hide-details
-                      ></v-textarea>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        label="Latitude"
-                        v-model.number="hospital.latitude"
-                        @blur="$v.hospital.latitude.$touch()"
-                        :error-messages="latitudeErrors"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                        type="number"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        label="Longitude"
-                        v-model.number="hospital.longitude"
-                        @blur="$v.hospital.longitude.$touch()"
-                        :error-messages="longitudeErrors"
-                        outlined
-                        single-line
-                        dense
-                        hide-details
-                        type="number"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="accent darken-3" text @click="dialog = false"
-                  >Cancel</v-btn
-                >
-                <v-btn
-                  color="accent darken-3"
-                  text
-                  @click="save"
-                  :disabled="$v.$invalid"
-                  >Save</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
+    <v-toolbar flat color="white">
+      <v-toolbar-title>Hospital</v-toolbar-title>
+      <v-divider class="mx-4" inset vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-dialog v-model="dialog" max-width="500px">
+        <template v-slot:activator="{ on }">
+          <v-btn color="accent" dark v-on="on" @click="addItem()"
+            >New Item</v-btn
+          >
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">{{ formTitle }}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container class="pa-0">
+              <v-row dense>
+                <v-col cols="6" sm="6">
+                  <v-text-field
+                    label="Hospital ID"
+                    v-model="hospital.hospital_id"
+                    @blur="$v.hospital.hospital_id.$touch()"
+                    :error-messages="hospitalIdErrors"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6" sm="6">
+                  <v-select
+                    label="Type"
+                    v-model="hospital.type"
+                    @blur="$v.hospital.type.$touch()"
+                    :error-messages="typeErrors"
+                    :items="hospitalTypes"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" sm="12">
+                  <v-text-field
+                    label="Name"
+                    v-model="hospital.name"
+                    @blur="$v.hospital.name.$touch()"
+                    :error-messages="nameErrors"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6" sm="6">
+                  <v-text-field
+                    label="Province"
+                    v-model="hospital.province"
+                    @blur="$v.hospital.province.$touch()"
+                    :error-messages="provinceErrors"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6" sm="6">
+                  <v-text-field
+                    label="City"
+                    v-model="hospital.city"
+                    @blur="$v.hospital.city.$touch()"
+                    :error-messages="cityErrors"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12">
+                  <v-textarea
+                    label="Address"
+                    v-model="hospital.address"
+                    @blur="$v.hospital.address.$touch()"
+                    :error-messages="addressErrors"
+                    auto-grow
+                    outlined
+                    single-line
+                    rows="3"
+                    hide-details
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="6" sm="6">
+                  <v-text-field
+                    label="Latitude"
+                    v-model.number="hospital.latitude"
+                    @blur="$v.hospital.latitude.$touch()"
+                    :error-messages="latitudeErrors"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                    type="number"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6" sm="6">
+                  <v-text-field
+                    label="Longitude"
+                    v-model.number="hospital.longitude"
+                    @blur="$v.hospital.longitude.$touch()"
+                    :error-messages="longitudeErrors"
+                    outlined
+                    single-line
+                    dense
+                    hide-details
+                    type="number"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="accent darken-3" text @click="dialog = false"
+              >Cancel</v-btn
+            >
+            <v-btn
+              color="accent darken-3"
+              text
+              @click="save"
+              :disabled="$v.$invalid"
+              >Save</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-toolbar>
+    <v-data-table
+      class="mt-2"
+      :headers="headers"
+      :items="hospitals"
+      sort-by="hospital_id"
+    >
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">
           mdi-pencil
