@@ -7,6 +7,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Hospital from "../views/Hospital.vue";
 import Doctor from "../views/Doctor.vue";
 import Patient from "../views/Patient.vue";
+import PatientDetail from "../views/PatientDetail.vue";
 import Setting from "../views/Setting.vue";
 
 import store from "../store";
@@ -43,6 +44,11 @@ const routes = [
     path: "/patient",
     name: "Patient",
     component: Patient,
+  },
+  {
+    path: "/patient/:id",
+    name: "PatientDetail",
+    component: PatientDetail,
   },
   {
     path: "/setting",

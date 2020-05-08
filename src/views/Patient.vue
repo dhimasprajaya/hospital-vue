@@ -53,10 +53,10 @@ export default {
   computed: {
     ...mapGetters(["patients"]),
     dataset() {
-      var dataset = this.patients;
-      var now = new Date().getFullYear();
+      let dataset = this.patients;
+      let now = new Date().getFullYear();
       dataset.forEach((item) => {
-        var age = now - new Date(item.date_of_birth).getFullYear();
+        let age = now - new Date(item.date_of_birth).getFullYear();
 
         item.fullname = item.first_name + " " + item.last_name;
         item.age = age;
@@ -73,7 +73,7 @@ export default {
   methods: {
     ...mapActions(["getPatients"]),
     viewDetail(item) {
-      console.log(item);
+      this.$router.push("/patient/" + item.id);
     },
   },
 };
