@@ -69,10 +69,24 @@
           <v-toolbar-title class="ml-n4">{{ formTitle }}</v-toolbar-title>
         </v-toolbar>
         <v-row dense>
+          <v-col cols="12" class="d-flex justify-center mb-4">
+            <croppa
+              v-model="imageCroppa"
+              :width="180"
+              :height="180"
+              :quality="2"
+              placeholder="Upload Image"
+              :placeholder-font-size="14"
+              :initial-image="initialImage"
+              :prevent-white-space="true"
+            />
+          </v-col>
           <v-col cols="6">
             <v-text-field
               label="Firstname"
               v-model="doctor.first_name"
+              @blur="$v.doctor.first_name.$touch()"
+              :error-messages="firstNameErrors"
               outlined
               single-line
               dense
@@ -83,6 +97,8 @@
             <v-text-field
               label="Lastname"
               v-model="doctor.last_name"
+              @blur="$v.doctor.last_name.$touch()"
+              :error-messages="lastNameErrors"
               outlined
               single-line
               dense
@@ -93,6 +109,8 @@
             <v-text-field
               label="Phone Number"
               v-model="doctor.phone"
+              @blur="$v.doctor.phone.$touch()"
+              :error-messages="phoneErrors"
               outlined
               single-line
               dense
@@ -102,6 +120,8 @@
             <v-text-field
               label="Doctor ID"
               v-model="doctor.doctor_id"
+              @blur="$v.doctor.doctor_id.$touch()"
+              :error-messages="doctorIdErrors"
               outlined
               single-line
               dense
@@ -112,6 +132,8 @@
             <v-text-field
               label="License Number"
               v-model="doctor.license_number"
+              @blur="$v.doctor.license_number.$touch()"
+              :error-messages="licenseNumberErrors"
               outlined
               single-line
               dense
@@ -122,6 +144,8 @@
             <v-text-field
               label="Specialization"
               v-model="doctor.specialist"
+              @blur="$v.doctor.specialist.$touch()"
+              :error-messages="specialistErrors"
               outlined
               single-line
               dense
@@ -138,7 +162,13 @@
           <v-btn class="mr-2" outlined color="accent" @click="cancel">
             Cancel
           </v-btn>
-          <v-btn primary color="accent" @click="save" width="100">
+          <v-btn
+            primary
+            color="accent"
+            @click="save"
+            width="100"
+            :disabled="$v.$invalid"
+          >
             Save
           </v-btn>
         </div>
@@ -158,6 +188,8 @@ export default {
     drawerRight: false,
     isEdit: false,
     doctor: {},
+    imageCroppa: {},
+    initialImage: null,
   }),
 
   validations: {
@@ -176,6 +208,46 @@ export default {
     formTitle() {
       return this.isEdit === false ? "New Doctor" : "Edit Doctor";
     },
+    firstNameErrors() {
+      const errors = [];
+      if (!this.$v.doctor.first_name.$dirty) return errors;
+      !this.$v.doctor.first_name.required &&
+        errors.push("Firstname is required");
+      return errors;
+    },
+    lastNameErrors() {
+      const errors = [];
+      if (!this.$v.doctor.last_name.$dirty) return errors;
+      !this.$v.doctor.last_name.required && errors.push("Lastname is required");
+      return errors;
+    },
+    phoneErrors() {
+      const errors = [];
+      if (!this.$v.doctor.phone.$dirty) return errors;
+      !this.$v.doctor.phone.required && errors.push("Phone is required");
+      return errors;
+    },
+    doctorIdErrors() {
+      const errors = [];
+      if (!this.$v.doctor.doctor_id.$dirty) return errors;
+      !this.$v.doctor.doctor_id.required &&
+        errors.push("Doctor ID is required");
+      return errors;
+    },
+    licenseNumberErrors() {
+      const errors = [];
+      if (!this.$v.doctor.license_number.$dirty) return errors;
+      !this.$v.doctor.license_number.required &&
+        errors.push("License number is required");
+      return errors;
+    },
+    specialistErrors() {
+      const errors = [];
+      if (!this.$v.doctor.specialist.$dirty) return errors;
+      !this.$v.doctor.specialist.required &&
+        errors.push("Specialization is required");
+      return errors;
+    },
   },
 
   created() {
@@ -189,15 +261,21 @@ export default {
       "editDoctor",
       "deleteDoctor",
       "showDialog",
+      "uploadImage",
     ]),
     addItem() {
       this.drawerRight = true;
+      this.isEdit = false;
+
+      this.$v.$reset();
       this.doctor = {};
+      this.refreshimage({});
     },
     editItem(doctor) {
       this.drawerRight = true;
       this.isEdit = true;
       this.doctor = Object.assign({}, doctor);
+      this.refreshimage(doctor);
     },
     cancel() {
       this.drawerRight = false;
@@ -216,7 +294,38 @@ export default {
         }
       });
     },
-    save() {
+    prepareImagePayload() {
+      return new Promise((resolve) => {
+        this.imageCroppa.generateBlob(
+          (blob) => {
+            // Set image payload
+            let payload = {
+              folder: "img/doctor",
+              filename:
+                this.doctor.first_name +
+                "_" +
+                this.doctor.last_name +
+                "_" +
+                this.doctor.doctor_id,
+              file: blob,
+            };
+            resolve(payload);
+          },
+          "image/jpeg",
+          0.8 // 80% compressed jpeg file
+        );
+      });
+    },
+    async save() {
+      try {
+        // Prepare image payload
+        const payload = await this.prepareImagePayload();
+        var imageUrl = await this.uploadImage(payload);
+        this.doctor.image_url = imageUrl;
+      } catch (error) {
+        console.log("err vue-croppa", error);
+      }
+
       this.isEdit
         ? this.editDoctor(this.doctor)
         : this.createDoctor(this.doctor);
@@ -224,6 +333,14 @@ export default {
       this.doctor = {};
       this.drawerRight = false;
       this.isEdit = false;
+    },
+    refreshimage() {
+      var image = new Image();
+      // image.setAttribute("crossorigin", "anonymous");
+      image.src = this.doctor.image_url;
+
+      this.initialImage = image;
+      this.imageCroppa.refresh();
     },
   },
 };

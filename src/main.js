@@ -4,6 +4,8 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import Vuelidate from "vuelidate";
+import Croppa from "vue-croppa";
+import "vue-croppa/dist/vue-croppa.css";
 
 Vue.config.productionTip = false;
 
@@ -13,6 +15,7 @@ Vue.filter("thousand", function(value) {
 });
 
 Vue.use(Vuelidate);
+Vue.use(Croppa);
 
 new Vue({
   router,
