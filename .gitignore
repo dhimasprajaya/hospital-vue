@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase
+.firebase
+.firebaserc
+firebase.json
+src/firebase.js
