@@ -11,12 +11,15 @@ import patient from "./modules/patient";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [createPersistedState({ key: "local", paths: ["token"] })],
+  plugins: [
+    createPersistedState({ key: "local", paths: ["token", "selectedPatient"] }),
+  ],
   state: {
     token: null,
     loading: false,
     snackbar: {},
     dialog: {},
+    selectedPatient: {},
   },
   getters: {
     token: (state) => {
@@ -30,6 +33,9 @@ export default new Vuex.Store({
     },
     dialog: (state) => {
       return state.dialog;
+    },
+    selectedPatient: (state) => {
+      return state.selectedPatient;
     },
   },
   mutations: {
@@ -50,6 +56,9 @@ export default new Vuex.Store({
     },
     dismissDialog: (state) => {
       state.dialog = {};
+    },
+    selectedPatient: (state, patient) => {
+      state.selectedPatient = patient;
     },
   },
   actions: {
@@ -84,10 +93,6 @@ export default new Vuex.Store({
       if (!snackbar.color) snackbar.color = "accent";
       if (!snackbar.timeout) snackbar.timeout = 2000;
       commit("snackbar", snackbar);
-
-      setTimeout(() => {
-        commit("snackbar", {});
-      }, snackbar.timeout);
     },
     showDialog: ({ commit }, { title, text }) => {
       return new Promise((resolve, reject) => {
@@ -96,6 +101,9 @@ export default new Vuex.Store({
     },
     dismissDialog: ({ commit }) => {
       commit("dismissDialog");
+    },
+    selectedPatient: ({ commit }, patient) => {
+      commit("selectedPatient", patient);
     },
   },
   modules: {

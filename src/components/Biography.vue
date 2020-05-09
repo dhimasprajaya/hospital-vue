@@ -36,12 +36,7 @@
         </div>
       </v-col>
       <v-col class="d-flex flex-column" style="height:100%" cols="12" sm="6">
-        <v-img
-          class="ma-4"
-          :src="patient.image_url"
-          min-height="200"
-          max-height="300"
-        >
+        <v-img class="ma-4" :src="patient.image_url" max-height="300">
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
               <v-icon
@@ -71,32 +66,19 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Biography",
-  //   props: ["patient"],
-
-  data: () => ({
-    dummy: {
-      patient_id: "P-1234",
-      first_name: "Andrea",
-      last_name: "Darwis",
-      date_of_birth: "2020-03-13T10:34:28.827543Z",
-      gender: "Female",
-      phone: "081212341234",
-      email: "pasien1@gmail.com",
-      address: "Jln. Bungur Raya, Bekasi",
-      image_url:
-        "https://res.cloudinary.com/dk0z4ums3/image/upload/v1470658505/attached_image/saatnya-semua-pihak-memahami-perlindungan-konsumen-bagi-pasien-alodokter.jpg",
-      medical_history: null,
-    },
-  }),
 
   computed: {
+    ...mapGetters(["selectedPatient"]),
     patient() {
-      let patient = this.dummy;
+      let patient = this.selectedPatient;
       let now = new Date().getFullYear();
+      let formatDate = patient.date_of_birth.substr(0, 10);
       patient.age = now - new Date(patient.date_of_birth).getFullYear();
-      patient.birthday = patient.date_of_birth.substr(0, 10);
+      patient.birthday = formatDate;
       return patient;
     },
   },

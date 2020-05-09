@@ -71,8 +71,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getPatients"]),
+    ...mapActions(["getPatients", "selectedPatient"]),
     viewDetail(item) {
+      this.selectedPatient(item);
       this.$router.push("/patient/" + item.id);
     },
   },
