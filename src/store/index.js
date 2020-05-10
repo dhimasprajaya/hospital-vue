@@ -7,6 +7,7 @@ import firebase from "./modules/firebase";
 import hospital from "./modules/hospital";
 import doctor from "./modules/doctor";
 import patient from "./modules/patient";
+import user from "./modules/user";
 
 Vue.use(Vuex);
 
@@ -111,5 +112,6 @@ export default new Vuex.Store({
     hospital,
     doctor,
     patient,
+    user,
   },
 });

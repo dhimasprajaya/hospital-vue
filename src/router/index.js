@@ -8,7 +8,8 @@ import Hospital from "../views/Hospital.vue";
 import Doctor from "../views/Doctor.vue";
 import Patient from "../views/Patient.vue";
 import PatientDetail from "../views/PatientDetail.vue";
-import Setting from "../views/Setting.vue";
+import User from "../views/User.vue";
+import ChangePassword from "../views/ChangePassword.vue";
 
 import store from "../store";
 
@@ -51,9 +52,14 @@ const routes = [
     component: PatientDetail,
   },
   {
-    path: "/setting",
-    name: "Setting",
-    component: Setting,
+    path: "/user",
+    name: "User",
+    component: User,
+  },
+  {
+    path: "/change",
+    name: "ChangePassword",
+    component: ChangePassword,
   },
   {
     path: "*",

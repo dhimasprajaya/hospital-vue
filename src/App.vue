@@ -118,7 +118,14 @@ export default {
           { title: "Patient", icon: "mdi-account-box", link: "/patient" },
         ],
       },
-      { title: "Setting", icon: "mdi-wrench", link: "/setting" },
+      {
+        title: "Setting",
+        icon: "mdi-wrench",
+        items: [
+          { title: "User", icon: "mdi-account-key", link: "/user" },
+          { title: "Change Password", icon: "mdi-lock", link: "/change" },
+        ],
+      },
     ],
   }),
 
